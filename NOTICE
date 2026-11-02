@@ -1,0 +1,18 @@
+A2W + Z1 WheelV2 / Precision reproduction
+
+Based on LeggedManip_Lab by Junjie Zhu, upstream commit
+4e12109d1eccb1d9da2e4a35f189fabea3f13677:
+https://github.com/zzzJie-Robot/LeggedManip_Lab
+The upstream Apache-2.0 LICENSE and source copyright notices are retained.
+This is a modified, independently trained reproduction, not an official release.
+
+Robot adaptation and WheelV2 / Precision additions are documented in
+docs/PRECISION_50K_CHANGES.md, with file-by-file provenance in docs/provenance/.
+Local reproduction additions are made available under Apache-2.0, except for
+third-party assets, binaries, and dependencies with their own licensing terms.
+
+A2W/Z1 meshes are supplied robot assets from the user's door-simulation URDF.
+Their inclusion does not grant new rights or relicense vendor material under
+Apache-2.0. The upstream status/license of each vendor asset must be respected.
+Isaac Sim and Isaac Lab are separate dependencies; no Isaac Sim binary,
+proprietary runtime, user credentials, dataset or policy weights are bundled.

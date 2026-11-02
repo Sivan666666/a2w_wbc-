@@ -1,0 +1,5 @@
+{
+  "passed": true,
+  "matched": 1056,
+  "scope": "Every file recorded by the original source manifest (LeggedManip_Lab + IsaacLab); auxiliary scripts/assets not covered by that original manifest are inventoried separately."
+}

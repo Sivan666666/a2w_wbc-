@@ -1,0 +1,10 @@
+torch==2.7.0+cu128
+torchvision==0.22.0+cu128
+numpy==1.26.0
+rsl-rl-lib==5.0.1
+gymnasium==1.2.1
+pillow==11.3.0
+packaging==23.0
+scipy==1.15.3
+trimesh==4.6.8
+pin==2.7.0

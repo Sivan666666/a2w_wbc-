@@ -1,0 +1,44 @@
+{
+  "source": "/mnt/sda/ps/leggedmanip-lab/runtime/assets/a2wz1_source/urdf/a2wz1.urdf",
+  "source_sha256": "0a857505af3f0004957c3523b5139e70c7c704dea025cf3d81a8a3ed742142d1",
+  "output_sha256": "799b9e8097851d1de38ac2db91b8ac9773dbbdcf6c972dfd102db8e1d4d2cd28",
+  "renamed_frames": {
+    "base_link": "base",
+    "base": "z1_mount",
+    "link00": "link0",
+    "ee_gripper_link": "end_effector"
+  },
+  "notes": [
+    "free root supplied by simulator, not world URDF link",
+    "four continuous wheel joints retain torque/speed limits",
+    "gripper fixed at source zero pose: WBC does not control grasp",
+    "no mesh/shape or existing inertia changes"
+  ],
+  "massless_frames_given_1mg": [
+    "z1_mount"
+  ],
+  "active_joints": [
+    "FL_hip_joint",
+    "FL_thigh_joint",
+    "FL_calf_joint",
+    "FL_wheel_joint",
+    "RL_hip_joint",
+    "RL_thigh_joint",
+    "RL_calf_joint",
+    "RL_wheel_joint",
+    "FR_hip_joint",
+    "FR_thigh_joint",
+    "FR_calf_joint",
+    "FR_wheel_joint",
+    "RR_hip_joint",
+    "RR_thigh_joint",
+    "RR_calf_joint",
+    "RR_wheel_joint",
+    "joint1",
+    "joint2",
+    "joint3",
+    "joint4",
+    "joint5",
+    "joint6"
+  ]
+}

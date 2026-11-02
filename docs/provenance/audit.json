@@ -1,0 +1,52 @@
+{
+  "passed": true,
+  "baseline_unchanged": true,
+  "allowed_changes": [
+    "EE x lower bound",
+    "medium/fine position rewards"
+  ],
+  "sampling_count": 6400,
+  "xyz_min": [
+    0.10001082718372345,
+    -0.34991735219955444,
+    0.10002057999372482
+  ],
+  "xyz_max": [
+    0.8498309254646301,
+    0.349608451128006,
+    0.9993442296981812
+  ],
+  "actor_obs_shape": [
+    64,
+    234
+  ],
+  "num_actions": 22,
+  "known_position_error_weighted_rewards": {
+    "0.0": {
+      "end_effector_position_tracking_exp": 4.5,
+      "ee_position_medium": 1.0,
+      "ee_position_fine": 1.5
+    },
+    "0.01": {
+      "end_effector_position_tracking_exp": 4.495502471923828,
+      "ee_position_medium": 0.9900498390197754,
+      "ee_position_fine": 1.4411840736865997
+    },
+    "0.05": {
+      "end_effector_position_tracking_exp": 4.388894587755203,
+      "ee_position_medium": 0.7788007855415344,
+      "ee_position_fine": 0.5518192648887634
+    },
+    "0.1": {
+      "end_effector_position_tracking_exp": 4.071768701076508,
+      "ee_position_medium": 0.3678794801235199,
+      "ee_position_fine": 0.027473464608192444
+    },
+    "0.3": {
+      "end_effector_position_tracking_exp": 1.8295636028051376,
+      "ee_position_medium": 0.00012340980174485594,
+      "ee_position_fine": 3.479284445542585e-16
+    }
+  },
+  "finite_zero_action_steps": 64
+}
