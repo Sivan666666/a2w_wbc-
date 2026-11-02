@@ -9,6 +9,14 @@ import hashlib
 import importlib.metadata
 import traceback
 from pathlib import Path
+import sys
+# Live queue cancellation guard, checked before even starting Isaac Sim. An old
+# buffered launcher must not start a PPO job after the user cancelled it.
+if '--output' in sys.argv:
+    output_arg = Path(sys.argv[sys.argv.index('--output')+1])
+    if (output_arg.parent/'PPO_CANCELLED_BY_USER').exists():
+        print('PPO_CANCELLED_BY_USER: no simulation or PPO training started.', flush=True)
+        raise SystemExit(75)
 from isaaclab.app import AppLauncher
 p=argparse.ArgumentParser()
 p.add_argument('--output',type=Path,required=True)

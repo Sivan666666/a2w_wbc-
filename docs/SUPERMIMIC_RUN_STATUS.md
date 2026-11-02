@@ -1,5 +1,9 @@
 # Initial launch record — 2026-11-02
 
+**Superseded:** the user subsequently cancelled the queued PPO control. Only
+the current BPTT training continues; no automatic paired benchmark remains.
+See [cancellation record](SUPERMIMIC_PPO_CANCELLED.md). The text below is historical.
+
 This is a launch-time snapshot, not a live dashboard or a completed benchmark.
 
 - Source branch: `codex/supermimic-a2w`.
