@@ -10,6 +10,8 @@ p.add_argument('--task',default='A2W-Z1-WBC-WheelV2-Precision-Play')
 p.add_argument('--num_envs',type=int,default=64)
 p.add_argument('--seed',type=int,default=20261111)
 p.add_argument('--seconds',type=float,default=200)
+p.add_argument('--x_min',type=float,choices=(0.1,0.55),default=0.1,
+               help='Match archived PPO expanded/original evaluation domain')
 AppLauncher.add_app_launcher_args(p)
 a=p.parse_args();a.output.mkdir(parents=True,exist_ok=False)
 app=AppLauncher(a).app
@@ -27,6 +29,8 @@ def main():
     capture(a.output)
     torch.set_num_threads(4)
     cfg=parse_env_cfg(a.task,device=a.device,num_envs=a.num_envs);cfg.seed=a.seed
+    cfg.commands.ee_pose.ranges.pos_x=(a.x_min,0.85)
+    cfg.commands.ee_pose.limit_ranges.pos_x=(a.x_min,0.85)
     cfg.scene.terrain.visual_material=None;cfg.scene.sky_light.spawn.texture_file=None
     cfg.commands.ee_pose.debug_vis=cfg.commands.base_velocity.debug_vis=False
     cfg.observations.policy.enable_corruption=False
@@ -54,7 +58,7 @@ def main():
             values.append(torch.stack((native,world,ori,xy,yaw),-1).cpu())
             failed+=int(term.sum());timeout+=int(trunc.sum())
     values=torch.stack(values).flatten(0,1)
-    result=dict(actor=str(a.actor),seed=a.seed,num_envs=a.num_envs,seconds=a.seconds,
+    result=dict(actor=str(a.actor),seed=a.seed,num_envs=a.num_envs,seconds=a.seconds,x_min=a.x_min,
                 failure_resets=failed,timeout_resets=timeout,samples=len(values),noise=False,
                 note='Pre-reset physical states; no learned-world-model evaluation; all frames included.')
     for i,name in enumerate(('ee_native_m','ee_world_m','orientation_rad','vel_xy_mps','vel_yaw_rps')):
