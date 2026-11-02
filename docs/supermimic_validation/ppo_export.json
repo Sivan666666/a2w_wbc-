@@ -1,0 +1,21 @@
+{
+  "actor": "/mnt/sda/ps/leggedmanip-lab/supermimic_20261102/runs/ppo_smoke02/actor_final.jit",
+  "seed": 20261111,
+  "num_envs": 64,
+  "seconds": 4.0,
+  "failure_resets": 0,
+  "timeout_resets": 0,
+  "samples": 12800,
+  "noise": false,
+  "note": "Pre-reset physical states; no learned-world-model evaluation; all frames included.",
+  "ee_native_m": 0.5060424208641052,
+  "ee_native_m_p95": 0.7946401238441467,
+  "ee_world_m": 0.514560341835022,
+  "ee_world_m_p95": 0.8024865388870239,
+  "orientation_rad": 0.9730778336524963,
+  "orientation_rad_p95": 1.5195897817611694,
+  "vel_xy_mps": 0.4406932592391968,
+  "vel_xy_mps_p95": 0.9805079698562622,
+  "vel_yaw_rps": 0.47589898109436035,
+  "vel_yaw_rps_p95": 0.9316131472587585
+}
