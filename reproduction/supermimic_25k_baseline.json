@@ -1,0 +1,33 @@
+{
+  "selection": "User-selected Go2-aligned BPTT25K, expanded-domain orientation priority among evaluated10K-35K checkpoints; not globally best on every metric",
+  "iteration": 25000,
+  "checkpoint": "checkpoint_0025000.pt",
+  "checkpoint_sha256": "390d5dcf1f579ae1f1c68fee518e28de824ce77f0247c01dc4966f99cf92e0c2",
+  "actor": "actor_0025000.jit",
+  "actor_sha256": "3ab581f7aaf5524cd0dd6a867c16793d4b973706416fdcfc28b88e7f42c524f7",
+  "actor_includes_running_norm": true,
+  "training_seed": 0,
+  "original_training_hardware": "PS1 physicalGPU3 RTX4090",
+  "physical_steps_per_env": 25018,
+  "physical_transitions": 102473728,
+  "imagined_transitions": 6474956800,
+  "training_wall_seconds": 67802.55217607971,
+  "evaluation": {
+    "domain": "link0 x in[0.10,0.85]m",
+    "seeds": [20260916, 20260917, 20260918],
+    "envs_per_seed": 64,
+    "seconds_per_seed": 200,
+    "noise": false,
+    "native_ee_m": 0.02305252104997635,
+    "orientation_rad": 0.15353545546531677,
+    "xy_mps": 0.08525947978099187,
+    "yaw_rps": 0.08678524692853291,
+    "failure_resets": 0
+  },
+  "destination_root": "/data01/niuwa/txc",
+  "destination_model_dir": "/data01/niuwa/txc/models/supermimic_go2_aligned_25k",
+  "authorized_future_physical_gpu": 7,
+  "training_start_authorized": false,
+  "exact_resume_supported": false,
+  "resume_limit": "Checkpoint has model/optimizer state but no replay buffer or PhysX serialization; a future warm-start must record reset/refill and its full new budget separately."
+}

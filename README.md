@@ -1,4 +1,17 @@
-# A2W + Z1 WBC — WheelV2 / Precision 50K
+# A2W Z1 SuperMimic 25K baseline
+
+本分支 `supermimic` 的当前基线是用户选定的 Go2 对齐 BPTT 25K，
+不是历史 PPO 50K、旧 BPTT 或姿态辅助损失试验。
+见 [本次改动、基线与迁移状态](docs/SUPERMIMIC_25K_RELEASE.md) 和
+[待批准的优化方案](docs/SUPERMIMIC_OPTIMIZATION_PLAN.md)。
+权重单独保存，不提交 Git；固定文件名和 SHA256 见
+`reproduction/supermimic_25k_baseline.json`。
+
+2026-11-04 用户已停止 PS1 训练，并确认先迁移到 A100、暂不训练。
+本分支没有自动启动或续训入口；现有 `train_go2_aligned.py` 仍是历史从零训练入口，
+不能当成 25K 续训命令。下文保留的 PPO 安装/训练流程仅为历史说明。
+
+## 历史 WheelV2 Precision 50K
 
 基于 [LeggedManip_Lab](https://github.com/zzzJie-Robot/LeggedManip_Lab) 的A2W轮足＋Z1全身控制适配与已训练实验代码。不是官方发行版，不是robot_lab任务，也不是ACT/图像策略。
 

@@ -20,6 +20,7 @@ p.add_argument('--num_envs', type=int, default=64)
 p.add_argument('--seconds', type=float, default=200)
 p.add_argument('--task', choices=['A2W-Z1-WBC-WheelV2-Play'], default='A2W-Z1-WBC-WheelV2-Play')
 p.add_argument('--x_min', type=float, choices=[0.1, 0.55], required=True)
+p.add_argument('--training_source_manifest', type=Path, default=None)
 AppLauncher.add_app_launcher_args(p)
 a = p.parse_args()
 a.output.mkdir(parents=True, exist_ok=False)
@@ -147,7 +148,7 @@ def main():
     files = [Path(__file__), root / 'scripts/rsl_rl/play.py']
     files += sorted((root / 'source/LeggedManip_Lab/LeggedManip_Lab').rglob('*.py'))
     source_hashes = {str(f): hashlib.sha256(f.read_bytes()).hexdigest() for f in files}
-    source_manifest = root.parent / 'manifest.json'
+    source_manifest = a.training_source_manifest or root.parent / 'manifest.json'
     provenance = json.loads(source_manifest.read_text())
     diff = source_manifest.read_bytes()
     (a.output / 'training_source_manifest.json').write_bytes(diff)

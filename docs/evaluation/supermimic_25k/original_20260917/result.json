@@ -1,0 +1,22 @@
+{
+  "actor": "/mnt/sda/ps/leggedmanip-lab/supermimic_go2_aligned_20261103/runs/go2_aligned_seed0_20261103/actor_0025000.jit",
+  "seed": 20260917,
+  "num_envs": 64,
+  "seconds": 200.0,
+  "x_min": 0.55,
+  "failure_resets": 0,
+  "timeout_resets": 640,
+  "samples": 640000,
+  "noise": false,
+  "note": "Pre-reset physical states; no learned-world-model evaluation; all frames included.",
+  "ee_native_m": 0.025364669039845467,
+  "ee_native_m_p95": 0.06739529967308044,
+  "ee_world_m": 0.03248416259884834,
+  "ee_world_m_p95": 0.07797843962907791,
+  "orientation_rad": 0.07595852762460709,
+  "orientation_rad_p95": 0.29752469062805176,
+  "vel_xy_mps": 0.08400845527648926,
+  "vel_xy_mps_p95": 0.17744089663028717,
+  "vel_yaw_rps": 0.08801216632127762,
+  "vel_yaw_rps_p95": 0.2303122729063034
+}

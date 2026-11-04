@@ -1,0 +1,27 @@
+{
+  "stage": "COMPLETE",
+  "checkpoint": "/mnt/sda/ps/leggedmanip-lab/supermimic_go2_aligned_20261103/runs/go2_aligned_seed0_20261103/checkpoint_0025000.pt",
+  "actor": "/mnt/sda/ps/leggedmanip-lab/supermimic_go2_aligned_20261103/runs/go2_aligned_seed0_20261103/actor_0025000.jit",
+  "step": 25000,
+  "iteration": 25000,
+  "physical_steps_per_env": 25018,
+  "checkpoint_sha256": "390d5dcf1f579ae1f1c68fee518e28de824ce77f0247c01dc4966f99cf92e0c2",
+  "actor_sha256": "3ab581f7aaf5524cd0dd6a867c16793d4b973706416fdcfc28b88e7f42c524f7",
+  "checkpoint_wall_seconds": 67802.55217607971,
+  "env_transitions": 102473728,
+  "imagined_transitions": 6474956800,
+  "training_seed": 0,
+  "training_hardware": "PS1 physical GPU 3; not A100",
+  "evaluation_gpu": "PS1 physical GPU 3 shared with live training",
+  "overlap_started_unix": 1793760108.4821832,
+  "completed": [
+    "expanded_20260916",
+    "expanded_20260917",
+    "expanded_20260918",
+    "original_20260916",
+    "original_20260917",
+    "original_20260918"
+  ],
+  "active": "original_20260918",
+  "overlap_finished_unix": 1793762451.4601326
+}

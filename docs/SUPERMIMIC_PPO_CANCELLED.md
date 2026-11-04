@@ -1,5 +1,10 @@
 # Superseding instruction: BPTT only
 
+2026-11-03 update: the old BPTT worker was also explicitly cancelled. The user
+requested a fresh Go2-supermimic-aligned experiment. See
+[alignment record](GO2_SUPERMIMIC_ALIGNMENT.md). The paragraphs below describe
+the earlier November 2 decision, not permission to restart the old worker.
+
 2026-11-02: User explicitly cancelled the queued fresh PPO control. The existing
 PPO results already exist; first train only the new from-scratch BPTT policy.
 

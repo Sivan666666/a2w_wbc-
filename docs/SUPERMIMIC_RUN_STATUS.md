@@ -1,8 +1,10 @@
 # Initial launch record — 2026-11-02
 
-**Superseded:** the user subsequently cancelled the queued PPO control. Only
-the current BPTT training continues; no automatic paired benchmark remains.
-See [cancellation record](SUPERMIMIC_PPO_CANCELLED.md). The text below is historical.
+**Superseded 2026-11-03:** the user cancelled the old BPTT training and its 90K
+evaluation. Neither the old BPTT run nor the cancelled PPO queue may be resumed.
+The replacement is a fresh Go2-aligned learner; see
+[alignment and replacement status](GO2_SUPERMIMIC_ALIGNMENT.md).
+The text below is historical, including obsolete server access notes.
 
 This is a launch-time snapshot, not a live dashboard or a completed benchmark.
 
