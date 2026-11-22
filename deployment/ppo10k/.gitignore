@@ -1,0 +1,8 @@
+__pycache__/
+*.so
+build/
+third_party/
+.venv/
+sim_results/
+!models/model_10000.pt
+!verification/actor_parity.npz

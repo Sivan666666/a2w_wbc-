@@ -1,0 +1,37 @@
+{
+  "hardware_execution": false,
+  "build": "x86_64 C++17, SDK2 b7fec602, Z1 f1af2b42, Python 3.10",
+  "native_import": "passed, no Hardware instance created",
+  "observation_reference_frames": 400,
+  "observation_max_abs_error": 0.0,
+  "action_processing_max_abs_error": 0.0,
+  "vr_translation_max_abs_error": 0.0,
+  "vr_rotation_error_rad": 2.220446049250313e-16,
+  "vr_loopback_json_roundtrip": true,
+  "actor_output_shape": [
+    22
+  ],
+  "actor_mean_ms_cpu_200_calls": 0.0948966946452856,
+  "export_parity": {
+    "checkpoint_sha256": "15f1d7c295d42ee12d75e1a7c241612c2a73471000da1beb3bc4a22a083fe87c",
+    "actor_sha256": "08d8c1ed4494b7e9b07549ff05c7a762b9c36bcb1c71380948f742a7c6429cbc",
+    "checkpoint_iteration": 10000,
+    "input": 234,
+    "output": 22,
+    "activation": "ELU",
+    "normalizer": "Identity",
+    "torch": "2.7.0+cu128",
+    "export_parity_max_abs": 0.0,
+    "actor_state_keys": [
+      "distribution.log_std_param",
+      "mlp.0.weight",
+      "mlp.0.bias",
+      "mlp.2.weight",
+      "mlp.2.bias",
+      "mlp.4.weight",
+      "mlp.4.bias",
+      "mlp.6.weight",
+      "mlp.6.bias"
+    ]
+  }
+}

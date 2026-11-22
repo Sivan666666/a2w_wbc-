@@ -1,0 +1,73 @@
+{
+  "version": "ppo10k-lowpd-feedforward-20261123",
+  "date": "2026-11-23",
+  "repository_base_commit": "a320da79159c2b67e096511b2b126e41e7007d0a",
+  "deployment": "A2W + Z1; NX inference and Z1 SDK, PC2 body bridge",
+  "runtime_source": "Local snapshot previously synchronized with NX; runtime code/config copied without control changes. NX network unavailable at publication.",
+  "user_feedback": "User reported this low-PD-plus-feedforward configuration runs well; no quantitative hardware accuracy claim.",
+  "arm_parameters": {
+    "prepare_arm_kp": [
+      512.0,
+      768.0,
+      768.0,
+      512.0,
+      384.0,
+      256.0
+    ],
+    "prepare_arm_kd": [
+      25.6,
+      25.6,
+      25.6,
+      25.6,
+      25.6,
+      25.6
+    ],
+    "prepare_arm_feedforward": "inverse_dynamics",
+    "policy_arm_kp": [
+      50.0,
+      50.0,
+      80.0,
+      30.0,
+      30.0,
+      20.0
+    ],
+    "policy_arm_kd": [
+      3.0,
+      2.0,
+      3.0,
+      3.0,
+      2.5,
+      1.0
+    ],
+    "policy_arm_feedforward": "inverse_dynamics"
+  },
+  "sha256": {
+    "deploy.nx.json": "7ab3bbc6f24c37213304ad1c18c1644f4a14deb1b934c5df6ce92a246cd0516c",
+    "deploy.json": "0051cdb90cf6eac2e32347395622fcfabb5b9e09ab19966f9aaa81a8af51959f",
+    "cpp/hardware.cpp": "aa30ed063ab4bef9da755acec712c295456c681b0d288bd2c4b32234a3f46e02",
+    "a2w_deploy/controller.py": "99e448dcb731f9214c1343bb5c2065650401bdcfe2afdd365c5759177ef88a38",
+    "a2w_deploy/run.py": "40649078f8376e1d215676ba7714afc58adc64d09be7f892d22dbf0245f3e0e5",
+    "models/ppo10k_actor.jit": "08d8c1ed4494b7e9b07549ff05c7a762b9c36bcb1c71380948f742a7c6429cbc",
+    "models/model_10000.pt": "15f1d7c295d42ee12d75e1a7c241612c2a73471000da1beb3bc4a22a083fe87c"
+  },
+  "validation": {
+    "offline_unit_tests": 13,
+    "python_shell_json_syntax": "passed",
+    "runtime_source_hash_match": true,
+    "hardware_started_for_publication": false,
+    "actor_reference_frames": 128,
+    "actor_max_abs_action_error": 0.0
+  },
+  "known_limitations": [
+    "SDK UDP receive wait is still 100 microseconds; timeout/freshness investigation remains open.",
+    "T native-home-hold fix passed SDK loopback verification, no new hardware retest claimed.",
+    "Low PD plus feedforward is not identical to zero-feedforward training actuation."
+  ],
+  "excluded": [
+    "compiled extensions",
+    "build/cache directories",
+    "one-time live handoff process script",
+    "hardware logs and videos",
+    "vendor SDK/controller binaries"
+  ]
+}

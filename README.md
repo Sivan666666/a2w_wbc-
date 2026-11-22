@@ -4,10 +4,15 @@
 
 **主文档：[Precision 50K相对官方的全部修改](docs/PRECISION_50K_CHANGES.md)**，包含机器人/关节/观测适配、全部奖励权重、命令和课程、训练超参、评测及已知限制。
 
+## PPO10K 真机部署
+
+新增 [A2W＋Z1 PPO10K 部署](deployment/ppo10k/README.md)：NX/PC2、键盘/VR、MuJoCo 和配套模型。当前真机配置为机械臂准备高增益、策略训练低 Kp/Kd＋动力学前馈；对应历史 Precision seed42 第10K轮，并非下方50K最终评测模型。
+
 ## 内容
 
 | 路径 | 用途 |
 |---|---|
+| `deployment/ppo10k/` | PPO10K 真机部署、模型、仿真与启动说明 |
 | `source/LeggedManip_Lab/` | 实际训练包；官方源码加A2W、WheelV2、Precision子类 |
 | `scripts/rsl_rl/train.py` | 官方PPO训练入口，未修改 |
 | `scripts/` | 训练快照中的资产、诊断、评测、play和MuJoCo辅助脚本 |

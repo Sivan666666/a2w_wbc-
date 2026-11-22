@@ -15,4 +15,7 @@ A2W/Z1 meshes are supplied robot assets from the user's door-simulation URDF.
 Their inclusion does not grant new rights or relicense vendor material under
 Apache-2.0. The upstream status/license of each vendor asset must be respected.
 Isaac Sim and Isaac Lab are separate dependencies; no Isaac Sim binary,
-proprietary runtime, user credentials, dataset or policy weights are bundled.
+proprietary runtime, user credentials or datasets are bundled.
+The deployment/ppo10k directory includes the user-authorized Precision seed42
+10K checkpoint and exported actor, with hashes in its provenance files.
+Its copied training references retain their upstream notices and LICENSE.
