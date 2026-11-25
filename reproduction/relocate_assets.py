@@ -1,6 +1,7 @@
 """Explicit publication-only path migration; never changes robot geometry/physics.
 
-The committed URDF is the exact A100 training snapshot (absolute mesh paths).
+The active URDF has camera brackets removed and SDK-aligned arm joint limits;
+the historical A100 model is retained in docs/provenance/a2wz1_wbc.training.urdf.
 Run this once in a fresh clone before using Isaac's URDF importer. The diff is
 intentional and all non-path XML content is asserted unchanged. Generated USD
 must not be reused from an earlier location; a fresh clone includes no USD.
@@ -43,7 +44,9 @@ def main():
     new = re.sub(r'(<mesh\s+filename=")([^"]+)(")', replace, old)
     assert normalized_xml(old) == normalized_xml(new), 'Unexpected non-path XML edit'
     if old != new:
-        if (ASSET / 'usd' / 'a2wz1_wbc.usd').exists():
+        if ((ASSET / 'usd' / 'a2wz1_wbc.usd').exists()
+                or (ASSET / 'usd_no_camera_mounts' / 'a2wz1_wbc_no_camera_mounts.usd').exists()
+                or (ASSET / 'usd_no_camera_mounts_sdk_limits' / 'a2wz1_wbc_no_camera_mounts_sdk_limits.usd').exists()):
             raise RuntimeError('Generated USD already exists; use a fresh clone to avoid stale USD')
         path.write_text(new)
     report = {'before_sha256': hashlib.sha256(old.encode()).hexdigest(),

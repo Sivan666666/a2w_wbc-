@@ -260,6 +260,33 @@ def joint_deviation_l1(
     return reward
 
 
+def hip_deviation_l1(env: ManagerBasedRLEnv, asset_cfg: SceneEntityCfg) -> torch.Tensor:
+    """Hip displacement from home, active at every base orientation."""
+    data = env.scene[asset_cfg.name].data
+    deviation = data.joint_pos[:, asset_cfg.joint_ids] - data.default_joint_pos[:, asset_cfg.joint_ids]
+    return deviation.abs().sum(dim=-1)
+
+
+def hip_comfort_l2(
+    env: ManagerBasedRLEnv, asset_cfg: SceneEntityCfg, comfort_angle: float = 0.25
+) -> torch.Tensor:
+    """Squared excess beyond the hip comfort range in radians; no hard clipping."""
+    data = env.scene[asset_cfg.name].data
+    deviation = data.joint_pos[:, asset_cfg.joint_ids] - data.default_joint_pos[:, asset_cfg.joint_ids]
+    excess = (deviation.abs() - comfort_angle).clamp_min(0.0)
+    return excess.square().sum(dim=-1)
+
+
+def hip_mirror_l2(env: ManagerBasedRLEnv, asset_cfg: SceneEntityCfg) -> torch.Tensor:
+    """Left/right hip mirror error; joint_ids must be ordered FR, FL, RR, RL.
+
+    A2W hip axes all point along +X, so mirrored angles have opposite signs.
+    Sum the front and rear errors without coupling front to rear or including wheels.
+    """
+    angle = env.scene[asset_cfg.name].data.joint_pos[:, asset_cfg.joint_ids]
+    return (angle[:, 0] + angle[:, 1]).square() + (angle[:, 2] + angle[:, 3]).square()
+
+
 def joint_mirror(
     env: ManagerBasedRLEnv, asset_cfg: SceneEntityCfg, mirror_joints: list[list[str]]
 ) -> torch.Tensor:

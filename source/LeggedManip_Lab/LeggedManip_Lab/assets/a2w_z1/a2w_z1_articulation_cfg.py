@@ -14,7 +14,10 @@ ACTIVE_JOINTS = POSITION_JOINTS + WHEELS
 A2W_Z1_CFG = ArticulationCfg(
     spawn=sim_utils.UrdfFileCfg(
         asset_path=str(ASSET_DIR / "a2wz1_wbc.urdf"),
-        usd_dir=str(ASSET_DIR / "usd"), usd_file_name="a2wz1_wbc.usd",
+        # No camera brackets; arm hard limits match the verified Z1 SDK model.
+        # Separate cache prevents reusing a USD with the historical wider limits.
+        usd_dir=str(ASSET_DIR / "usd_no_camera_mounts_sdk_limits"),
+        usd_file_name="a2wz1_wbc_no_camera_mounts_sdk_limits.usd",
         fix_base=False, merge_fixed_joints=False, make_instanceable=True,
         joint_drive=sim_utils.UrdfConverterCfg.JointDriveCfg(
             gains=sim_utils.UrdfConverterCfg.JointDriveCfg.PDGainsCfg(stiffness=0.0, damping=0.0)),
