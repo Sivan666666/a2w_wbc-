@@ -1,0 +1,69 @@
+{
+  "repository": "https://github.com/Improbable-AI/learning-compliance",
+  "commit": "c760e1d74ad165d3c069d4f57ab5d066f6a41eb6",
+  "license": "MIT",
+  "paper": "https://arxiv.org/abs/2405.01402",
+  "our_base_commit": "5d1555f",
+  "our_branch": "feature/a-sdk-force-control-20261126",
+  "sources": {
+    "b1_gym/envs/base/legged_robot.py": {
+      "sha256": "dd41d676c84e0cd08e8c85e85c459b57d568f0a0fa7557699d6484844f648e9d",
+      "ported_to": [
+        "core.py",
+        "isaac.py"
+      ]
+    },
+    "b1_gym/rewards/b1_loco_z1_gaitfree_rewards.py": {
+      "sha256": "f25423096d6b83c60371d2fa7902d24772b94d5d0c8a3c406df680722025b1a2",
+      "ported_to": [
+        "core.py",
+        "isaac.py",
+        "test_core.py"
+      ]
+    },
+    "b1_gym/sensors/ee_gripper_force_sensor.py": {
+      "sha256": "e1d48d1c3be1d66a4b7147f867e679d32a8cacfd73d33063972ebc196a98c0ec",
+      "ported_to": [
+        "isaac.py"
+      ]
+    },
+    "b1_gym/sensors/rc_sensor.py": {
+      "sha256": "ad9ec04f19916d38446a480f4fa1d724c4814f73823a420d6c8e759102fb2586",
+      "ported_to": [
+        "isaac.py"
+      ]
+    },
+    "b1_gym_learn/ppo_cse/actor_critic.py": {
+      "sha256": "5d37454d3b88c5d05ce75e3f8fb88a58fdf88e05bb4a7149d4f50696c595e540",
+      "ported_to": [
+        "learning.py"
+      ]
+    },
+    "b1_gym_learn/ppo_cse/ppo.py": {
+      "sha256": "338f615de827eae7b323e3669111468a9f486753eb62d1ddc5a4517bd76adcdc",
+      "ported_to": [
+        "learning.py"
+      ]
+    },
+    "b1_gym/envs/wrappers/history_wrapper.py": {
+      "sha256": "e51032db1ead7155c18b175c52641a2c456bb1e988a337a754a14c67038ae03d",
+      "ported_to": [
+        "inference.py"
+      ]
+    },
+    "scripts/train.py": {
+      "sha256": "1552a175635bbc1096ba1eebaa5ae5afe635ef78c5a4d880240c00b7a17d927e",
+      "ported_to": [
+        "core.py",
+        "learning.py"
+      ]
+    },
+    "LICENSE": {
+      "sha256": "7dc66e1919dbcc2b49af464ceac3518b230e0e253d57988d418e23f01ef675b9",
+      "ported_to": [
+        "vendor/LICENSE"
+      ]
+    }
+  },
+  "implementation_differences": "See README.md; this is a force-mechanism port onto A, not an exact end-to-end paper reproduction."
+}

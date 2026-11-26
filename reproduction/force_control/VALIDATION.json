@@ -1,0 +1,100 @@
+{
+  "branch": "feature/a-sdk-force-control-20261126",
+  "base_commit": "5d1555f",
+  "unit_tests": {
+    "passed": 9,
+    "log": "outputs/learning_compliance_migration_20261126/unit_tests.log",
+    "upstream_reward_oracle_samples": 128
+  },
+  "final_isaac_test": {
+    "num_envs": 16,
+    "control_steps": 300,
+    "pipeline_ppo_updates": 2,
+    "mode": "smoke",
+    "result": {
+      "pass": true,
+      "physics_substeps_with_force_callback": 1392,
+      "maximum_external_force_component_N": 70.0,
+      "reset_force_cleared": true,
+      "finite": true,
+      "losses": [
+        {
+          "surrogate": -0.060344040393829346,
+          "value_loss": 0.36552637815475464,
+          "estimator_loss": 3.2265281677246094,
+          "kl": 0.13403964042663574,
+          "learning_rate": 1e-05
+        },
+        {
+          "surrogate": -0.08688922971487045,
+          "value_loss": 0.41131591796875,
+          "estimator_loss": 1.5828368663787842,
+          "kl": 0.013787912204861641,
+          "learning_rate": 1.0000000000000004e-05
+        }
+      ],
+      "export_max_abs_error": 0.0,
+      "inference_history_max_abs_error": 0.0,
+      "checkpoint_model_equal": true,
+      "formal_training_started": false,
+      "training_updates_for_pipeline_test_only": 2,
+      "no_claim_of_trained_force_accuracy": true
+    },
+    "exit_code": 0,
+    "oom_killed": false,
+    "sdk_limits_runtime_verified": true,
+    "no_camera_brackets_verified": true,
+    "arm_actuator": "DelayedPDActuator",
+    "gravity_feedforward": false,
+    "physical_gravity": [
+      0,
+      0,
+      -9.81
+    ],
+    "policy_critic_action_dimensions": [
+      820,
+      121,
+      22
+    ],
+    "source_sha256": {
+      "isaac.py": "6f5ff022b7bbe963a7c54db58b76357e18a7efe6cde3199c75403d9a6ba04628",
+      "__init__.py": "f1bf69284e57409b8573d13f3d04c61569a94d1f41aefb28fae5eb7a338a2a34",
+      "core.py": "25143183f2e2492ad79358993b4bc6c13cfe74a91b479c676e1ad62bcdab9d6c",
+      "run.py": "f67b7dcb2ca177a893c55bb310760180981a96bcc3e43622ae5b2d1fdcc6e4c2",
+      "inference.py": "8362ad279f7df93b711242237bbd104e67cea2b468e0c26094741803efeba950",
+      "test_core.py": "7760aacd54af69cf22e558c6b8f769e4b963a8f33f3bad961e44a2ebe211d4d1",
+      "learning.py": "d6c852d94798d622bcde3d94e867ee4445a5bfa41d0ef4e2dea9693c5fb0ff33"
+    }
+  },
+  "evaluation_entry_test": {
+    "num_envs": 16,
+    "control_steps": 60,
+    "exit_code": 0,
+    "oom_killed": false,
+    "policy": "smoke checkpoint; no learned force performance claim"
+  },
+  "reward_audit": {
+    "original_terms": 28,
+    "after_terms": 31,
+    "nonforce_weights_and_parameters_unchanged": true,
+    "position_rewards_masked_in_force_mode": [
+      "ee_position_fine",
+      "ee_position_medium",
+      "end_effector_position_tracking_exp"
+    ]
+  },
+  "preliminary_smoke": {
+    "additional_pipeline_updates": 2,
+    "num_envs": 16,
+    "exit_code": 0
+  },
+  "formal_training_started": false,
+  "hardware_motion_started": false,
+  "limitations": [
+    "No trained force-control policy or real-contact/real-hardware force accuracy has been established.",
+    "Injected force truth excludes unknown contacts and external moments.",
+    "Observations and architecture differ from historical A; old actor checkpoints are not compatible.",
+    "PPO learner resumes exactly in the CPU regression test; simulator episodes reset on resume, not full PhysX continuation."
+  ],
+  "evidence_root": "outputs/learning_compliance_migration_20261126"
+}
