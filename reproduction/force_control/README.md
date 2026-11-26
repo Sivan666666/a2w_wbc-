@@ -57,3 +57,13 @@ python reproduction/force_control/run.py --mode train --iterations TOTAL_UPDATES
 `--iterations` 是总更新数。`--resume CHECKPOINT` 恢复学习器，不能改变观测／动作 ABI 或 PPO 配置。评测入口 `--mode evaluate --checkpoint CHECKPOINT --steps N` 保存力估计与力跟踪的逐轴误差；没有训练完成前，不应将其数字解释为力控性能。
 
 本次结果记录在工作区 `outputs/learning_compliance_migration_20261126`。最终验证摘要见 `VALIDATION.json`。未启动正式训练，也未启动真机。
+
+## PS2 从零 30K 的阶段评测（2026-11-27）
+
+新增 `--eval-interval 10000 --eval-steps 1500`：每达到 10K／20K／30K 保存 checkpoint 后，在同一卡上启动一个独立评测子进程。父学习器保留在内存中等待，评测完成再继续；不加载评测后的环境状态、不回退更新数。评测失败会留下 checkpoint 和错误日志并结束该训练进程，不静默跳过。
+
+`stage_eval.py` 固定 19 工况 × 4 环境 × 30 秒：7 项历史 EE 工况；12 项力模式工况（零力、XYZ 各 ±20 N、正负对角力、带前进／倒车／转向）。外力场 Kp=100 N/m、Kd=10 Ns/m；0–8 秒初始姿态，8–12 秒渐变，然后保持。零力工况保留弹簧阻尼场，用于检查顺应响应。所有训练阶段使用相同 seed=20261127。该 seed 和新力控观测不同于旧 A 的历史评测，不能把差异归因于单一因素。
+
+保存 `trace.npz`、`summary.json`、模型哈希、阶段状态与退出码。报告全程及末 5 秒的 EE cm／deg，力跟踪／力估计逐轴 N 和向量范数 N 的均值、P95、RMSE，底盘速度误差，臂／狗腿各自关节目标误差，以及失败事件／原因。EE 的 link0 姿态参考和 root 姿态参考分别记录，避免与历史计算混淆。位置模式 EE 是位置跟踪成绩；力模式下 EE 位置仅作诊断，不当成必须同时满足的位置目标。
+
+力估计使用 actor 实际读取的行动前历史，其误差与同一时刻的真值配对；力跟踪与 EE 状态在物理步之后、reset 之前采集。每帧 finite 检查，失败帧不会悄悄丢弃。真实外力仍只代表注入场，不等于全部物体接触合力。

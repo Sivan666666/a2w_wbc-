@@ -1,14 +1,16 @@
 """Opt-in force control. Defaults to a bounded smoke test, never a long training run."""
-import argparse,sys,json,time,traceback,hashlib,xml.etree.ElementTree as ET
+import argparse,sys,json,time,traceback,hashlib,subprocess,xml.etree.ElementTree as ET
 from pathlib import Path
 from dataclasses import asdict
 from isaaclab.app import AppLauncher
-p=argparse.ArgumentParser();p.add_argument('--output',required=True);p.add_argument('--mode',choices=['smoke','train','evaluate'],default='smoke');p.add_argument('--iterations',type=int);p.add_argument('--num_envs',type=int,default=16);p.add_argument('--seed',type=int,default=42);p.add_argument('--resume');p.add_argument('--checkpoint');p.add_argument('--steps',type=int,default=300);AppLauncher.add_app_launcher_args(p);a=p.parse_args()
+p=argparse.ArgumentParser();p.add_argument('--output',required=True);p.add_argument('--mode',choices=['smoke','train','evaluate','stage'],default='smoke');p.add_argument('--iterations',type=int);p.add_argument('--num_envs',type=int,default=16);p.add_argument('--seed',type=int,default=42);p.add_argument('--resume');p.add_argument('--checkpoint');p.add_argument('--steps',type=int,default=300);p.add_argument('--eval-interval',type=int,default=0);p.add_argument('--eval-steps',type=int,default=1500);AppLauncher.add_app_launcher_args(p);a=p.parse_args()
 if a.mode=='train' and (a.iterations is None or a.iterations<=0):p.error('train requires explicit total --iterations')
-if a.mode=='evaluate' and not a.checkpoint:p.error('evaluate requires --checkpoint')
+if a.mode in ('evaluate','stage') and not a.checkpoint:p.error('evaluate/stage requires --checkpoint')
+if a.eval_interval<0 or a.eval_steps<=0:p.error('Invalid evaluation interval/steps')
 if a.mode!='train' and a.resume:p.error('--resume is for train only')
 out=Path(a.output).resolve();out.mkdir(parents=True,exist_ok=bool(a.resume))
-def save(name,obj):(out/name).write_text(json.dumps(obj,ensure_ascii=False,indent=2))
+def save(name,obj):
+    path=out/name;temp=path.with_suffix(path.suffix+'.tmp');temp.write_text(json.dumps(obj,ensure_ascii=False,indent=2));temp.replace(path)
 save('status.json',{'stage':'starting','mode':a.mode})
 app=AppLauncher(a).app
 sys.path.insert(0,str(Path(__file__).resolve().parents[1]))
@@ -23,6 +25,9 @@ from force_control.inference import PolicyHistory, POLICY_TERMS
 def main():
     torch.set_num_threads(4);torch.manual_seed(a.seed);np.random.seed(a.seed)
     cfg,audit=make_cfg(a.device,a.num_envs);cfg.seed=a.seed
+    if a.mode=='stage':
+        from force_control.stage_eval import configure
+        cfg=configure(cfg);a.num_envs=cfg.scene.num_envs;a.seed=cfg.seed
     cfg.scene.terrain.visual_material=None;cfg.scene.sky_light.spawn.texture_file=None
     # Relocate mesh paths ONLY in an output copy, never mutate baseline URDF/cache.
     original=Path(cfg.scene.robot.spawn.asset_path);tree=ET.parse(original)
@@ -53,6 +58,15 @@ def main():
     save('manifest.json',manifest)
     model=CSEPolicy(*dims).to(a.device);learner=CSEPPO(model)
     if a.resume or a.checkpoint:learner.load(a.resume or a.checkpoint)
+    def state_hash(module):
+        h=hashlib.sha256()
+        for key,v in module.state_dict().items():h.update(key.encode());h.update(v.detach().cpu().contiguous().numpy().tobytes())
+        return h.hexdigest()
+    manifest.update({'checkpoint':a.resume or a.checkpoint,'base_iteration':learner.iteration,'restored_actor_critic_optimizer':bool(a.resume or a.checkpoint),
+                     'actor_initial_sha256':state_hash(model.actor),'critic_initial_sha256':state_hash(model.critic),'estimator_initial_sha256':state_hash(model.estimator),
+                     'initial_optimizer_state_count':len(learner.optimizer.state),'initial_estimator_optimizer_state_count':len(learner.estimator_optimizer.state),
+                     'eval_interval':a.eval_interval,'eval_steps':a.eval_steps,'ppo_config':asdict(learner.cfg),'started_at':time.time()})
+    save('manifest.json',manifest)
     env.training_step_offset=learner.iteration*learner.cfg.steps
     if a.mode=='smoke':
         # Bounded force/position mode exercise, not a learned-performance experiment.
@@ -94,11 +108,35 @@ def main():
         np.save(out/'force_smoke.npy',np.asarray(observed))
     elif a.mode=='train':
         if learner.iteration>=a.iterations:raise ValueError('Checkpoint already reaches total budget')
+        train_seconds=0.;evaluation_seconds=0.;eval_index={}
         while learner.iteration<a.iterations:
+            started=time.monotonic()
             batch,obs=learner.collect(env,obs);loss=learner.update(batch)
-            save('status.json',{'stage':'training','completed_updates':learner.iteration,'total_updates':a.iterations,'loss':loss,'updated_at':time.time()})
-            if learner.iteration%500==0 or learner.iteration==a.iterations:
-                learner.save(out/f'checkpoint_{learner.iteration:07d}.pt',manifest);learner.export(out/f'actor_{learner.iteration:07d}.jit')
+            train_seconds+=time.monotonic()-started
+            progress={'stage':'training','completed_updates':learner.iteration,'total_updates':a.iterations,'loss':loss,'updated_at':time.time(),
+                      'training_seconds_this_process':train_seconds,'evaluation_seconds_this_process':evaluation_seconds,'real_samples_total':learner.iteration*learner.cfg.steps*a.num_envs,'imagined_samples':0}
+            save('status.json',progress)
+            evaluate_now=a.eval_interval>0 and learner.iteration%a.eval_interval==0
+            if learner.iteration%500==0 or learner.iteration==a.iterations or evaluate_now:
+                cp=out/f'checkpoint_{learner.iteration:07d}.pt';learner.save(cp,manifest);learner.export(out/f'actor_{learner.iteration:07d}.jit')
+            if evaluate_now:
+                stage_dir=out/'evaluation'/f'stage_{learner.iteration:07d}'
+                save('status.json',progress|{'stage':'evaluating','evaluation_directory':str(stage_dir)})
+                cmd=[sys.executable,str(Path(__file__).resolve()),'--mode','stage','--checkpoint',str(cp),'--output',str(stage_dir),'--steps',str(a.eval_steps),'--headless','--device',a.device]
+                if a.kit_args:cmd.extend(['--kit_args',a.kit_args])
+                started=time.monotonic()
+                with (out/f'eval_{learner.iteration:07d}.log').open('w') as log:result=subprocess.run(cmd,stdout=log,stderr=subprocess.STDOUT)
+                evaluation_seconds+=time.monotonic()-started
+                if result.returncode:raise RuntimeError(f'Stage {learner.iteration} evaluation failed, checkpoint retained, exit {result.returncode}')
+                summary=json.loads((stage_dir/'summary.json').read_text())
+                assert summary['finite'] and summary['steps']==a.eval_steps
+                eval_index[str(learner.iteration)]={'summary':str(stage_dir/'summary.json'),'checkpoint_sha256':summary['checkpoint_sha256'],'exit_code':0}
+                save('evaluation_index.json',eval_index)
+            if learner.iteration%10==0:print(json.dumps(progress),flush=True)
+        save('training_complete.json',{'completed_updates':learner.iteration,'training_seconds_this_process':train_seconds,'evaluation_seconds_this_process':evaluation_seconds,'real_samples_total':learner.iteration*learner.cfg.steps*a.num_envs,'imagined_samples':0})
+    elif a.mode=='stage':
+        from force_control.stage_eval import evaluate
+        evaluate(env,model,out,a.checkpoint,a.steps)
     else:
         rows=[]
         for i in range(a.steps):
