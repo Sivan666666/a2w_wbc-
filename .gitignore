@@ -18,3 +18,6 @@ source/LeggedManip_Lab/LeggedManip_Lab/assets/a2w_z1/usd/
 .env.*
 !*.example
 .DS_Store
+
+# Published learning-compliance 30K checkpoint (SHA256 in model directory).
+!/models/learning_compliance/checkpoint_0030000.pt

@@ -48,7 +48,7 @@ python reproduction/force_control/run.py --mode smoke --output /path/to/new-smok
 
 测试需在相邻目录保留上述 upstream checkout，用其真实奖励函数作独立数值对照。`smoke` 为 300 控制步＋**仅 2 次小规模 PPO 更新**，用于检查梯度、优化器、导出和恢复；不代表训练好的力控精度。输出路径必须新建，避免覆盖旧结果。
 
-正式训练入口已提供，但本次未执行：
+初次迁移时提供的正式训练入口（2026-11-27 已完成从零 30K，见下方发布说明）：
 
 ```bash
 python reproduction/force_control/run.py --mode train --iterations TOTAL_UPDATES --output /path/to/new-run --num_envs 4096 --headless --device cuda:0
@@ -56,7 +56,7 @@ python reproduction/force_control/run.py --mode train --iterations TOTAL_UPDATES
 
 `--iterations` 是总更新数。`--resume CHECKPOINT` 恢复学习器，不能改变观测／动作 ABI 或 PPO 配置。评测入口 `--mode evaluate --checkpoint CHECKPOINT --steps N` 保存力估计与力跟踪的逐轴误差；没有训练完成前，不应将其数字解释为力控性能。
 
-本次结果记录在工作区 `outputs/learning_compliance_migration_20261126`。最终验证摘要见 `VALIDATION.json`。未启动正式训练，也未启动真机。
+本次结果记录在工作区 `outputs/learning_compliance_migration_20261126`。最终验证摘要见 `VALIDATION.json`。该段描述初次迁移验证阶段；之后已完成正式 30K 训练，未启动真机。
 
 ## PS2 从零 30K 的阶段评测（2026-11-27）
 
@@ -67,3 +67,7 @@ python reproduction/force_control/run.py --mode train --iterations TOTAL_UPDATES
 保存 `trace.npz`、`summary.json`、模型哈希、阶段状态与退出码。报告全程及末 5 秒的 EE cm／deg，力跟踪／力估计逐轴 N 和向量范数 N 的均值、P95、RMSE，底盘速度误差，臂／狗腿各自关节目标误差，以及失败事件／原因。EE 的 link0 姿态参考和 root 姿态参考分别记录，避免与历史计算混淆。位置模式 EE 是位置跟踪成绩；力模式下 EE 位置仅作诊断，不当成必须同时满足的位置目标。
 
 力估计使用 actor 实际读取的行动前历史，其误差与同一时刻的真值配对；力跟踪与 EE 状态在物理步之后、reset 之前采集。每帧 finite 检查，失败帧不会悄悄丢弃。真实外力仍只代表注入场，不等于全部物体接触合力。
+
+## 已完成的 30K 发布
+
+本分支附带 `models/learning_compliance/checkpoint_0030000.pt` 和 `actor_0030000.jit`。训练来源提交 `6552923`，seed42、4096环境、30000更新；10/20/30K阶段评测全部完成。详细复现命令、哈希与指标见 [30K发布说明](../../docs/LEARNING_COMPLIANCE_30K.md)。新增 `demos/impedance_rope.py` 是推理演示，不修改训练代码或权重。

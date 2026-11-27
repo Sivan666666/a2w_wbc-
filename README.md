@@ -1,3 +1,17 @@
+# Learning-compliance：A2W＋Z1 力估计与力控（30K）
+
+本分支 `learning-compliance` 发布已训练并验证的 **A＋模型关节限位对齐 SDK＋无重力前馈** 力控适配版本，使用平地。保留原 A 非力奖励，力模式关闭三项 EE 位置奖励，增加来源于 learning-compliance 的三轴力奖励。
+
+- [30K 模型、运行方法与评测结果](docs/LEARNING_COMPLIANCE_30K.md)
+- [完整 30K checkpoint](models/learning_compliance/checkpoint_0030000.pt)：actor、critic、estimator、两个优化器及恢复状态。
+- [30K TorchScript 推理模型](models/learning_compliance/actor_0030000.jit)：actor＋estimator。
+- [训练与力控实现](reproduction/force_control/README.md)
+- [虚拟弹簧阻抗／水平绳索测试](reproduction/force_control/demos/impedance_rope.py)
+
+以下为原 A 版本的历史说明；其中“尚未训练”“不附权重”仅对应当时的 A 发布，不适用于本分支以上力控 30K 模型。
+
+---
+
 # A2W + Z1 WBC — 当前优选训练方案 A
 
 基于 [LeggedManip_Lab](https://github.com/zzzJie-Robot/LeggedManip_Lab) 的A2W轮足＋Z1全身控制适配与已训练实验代码。不是官方发行版，不是robot_lab任务，也不是ACT/图像策略。

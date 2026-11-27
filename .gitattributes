@@ -4,3 +4,6 @@
 *.dae binary
 *.png binary
 *.jpg binary
+
+models/learning_compliance/*.pt binary
+models/learning_compliance/*.jit binary

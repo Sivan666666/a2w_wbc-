@@ -1,0 +1,37 @@
+{
+  "checkpoint_sha256": "bd7b3a2d13c0952125733ee3909d603995663d2d106562c8cf6ac1a4568316c7",
+  "all_tensors_finite": true,
+  "tensor_count": 112,
+  "checkpoint_keys": [
+    "model",
+    "optimizer",
+    "estimator_optimizer",
+    "iteration",
+    "learning_rate",
+    "ppo_config",
+    "dimensions",
+    "torch_rng",
+    "cuda_rng",
+    "metadata"
+  ],
+  "iteration": 30000,
+  "actor_sha256": "bd94ce9bf360ab4b346a5690d84b30530af3f724ea4ea2f39ec36f9ed5f5d4d9",
+  "training_source_commit": "6552923a332b3c18a97c24162de01ebe8e5fbdfe",
+  "training_seed": 42,
+  "num_envs": 4096,
+  "steps_per_update": 24,
+  "total_updates": 30000,
+  "real_simulation_transitions": 2949120000,
+  "imagined_samples": 0,
+  "initialization": "scratch",
+  "terrain": "plane",
+  "base": "hip A, SDK software-model limits in URDF, no camera mounts, no gravity feedforward",
+  "dimensions": {
+    "actor_history": 820,
+    "critic": 121,
+    "actions": 22,
+    "estimator": 9
+  },
+  "trained_force_frame": "base-yaw axes, environment-on-robot force",
+  "learning_rate_and_two_optimizers_in_checkpoint": true
+}
